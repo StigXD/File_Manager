@@ -16,17 +16,17 @@ namespace fs = filesystem;
 void Menu()
 {
 	//CacheFilesystem(path);
-	static string path = fs::current_path().string();
+	string path = fs::current_path().string();
 
-	static Component* currentDir;
+	Component* currentDir = new Directory(path);
 
 	while(true)
 	{
-		currentDir = new Directory(path);
-
 		int choice;
 
-		cout << format("Текущая директория: {}\n\n", path);
+		cout << "Текущая директория: " << endl;
+		ShowDirectory(currentDir, path);
+
 
 		cout << "Выберите пункт меню:" << endl;
 		cout << "1 - Показать содержимое директории" << endl;
@@ -227,15 +227,12 @@ void Menu()
 		}
 		case 9:
 		{
-			fs::path newPath = path;
-			path = newPath.parent_path().string();
-			currentDir = new Directory(path);
+			currentDir = new Directory(currentDir->MoveBack(path));
 			break;
 		}
 		case 10:
 		{
-			path = fs::current_path().root_path().string();
-			currentDir = new Directory(path);
+			currentDir = new Directory(currentDir->MoveToRoot(path));
 			break;
 		}
 

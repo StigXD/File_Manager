@@ -8,6 +8,7 @@
 #include <format>
 
 using namespace std;
+namespace fs = filesystem;
 
 class Component
 {
@@ -22,10 +23,11 @@ public:
     }
 
     virtual void Add(Component* component) = 0;
-
+    virtual string GetName() = 0;
     virtual void Remove(Component* component) = 0;
+    virtual string MoveBack(const string& path) = 0;
+    virtual string MoveToRoot(const string& path) = 0;
     virtual int Size() = 0;
-
     virtual void Print() = 0;
 };
 
@@ -40,14 +42,36 @@ public:
     {
     }
 
+    string GetName() override
+    {
+        return name;
+    }
+
     void Add(Component* component) override
     {
-        components.push_back(component);
+        for (int i = 0; i < components.size(); i++)
+            if (components[i]->GetName() == component->GetName())
+                components[i] = component;
+            else
+                components.push_back(component);
     }
 
     void Remove(Component* component) override
     {
         components.erase(remove(components.begin(), components.end(), component), components.end());
+    }
+
+    string MoveBack(const string& path) override
+    {
+        fs::path newPath = path;
+        return newPath.parent_path().string();
+    }
+
+    string MoveToRoot(const string& path) override
+    {
+        fs::path newPath = path; 
+        return newPath.root_path().string();
+
     }
 
     int Size() override
@@ -57,11 +81,13 @@ public:
 
     void Print() override
     {
-        cout << format("Папка {}", name) << endl;
-        cout << format("Содержимое:") << endl;
-        for (int i = 0; i < components.size(); i++)
-            components[i]->Print();
-        cout << endl;
+        cout << format("[Папка] {}", name) << endl << endl;
+        if (!components.empty())
+        {
+            for (int i = 0; i < components.size(); i++)
+                if (!fs::is_empty(components[i]->GetName()))
+                    components[i]->Print();
+        }
     }
 };
 
@@ -70,6 +96,11 @@ class File : public Component
 public:
 
     File(string name) : Component(name) { }
+
+    string GetName() override
+    {
+        return name;
+    }
 
     void Add(Component* component) override
     {
@@ -81,6 +112,15 @@ public:
         throw exception();
     }
 
+    string MoveBack(const string& path) override
+    {
+        throw exception();
+    }
+    string MoveToRoot(const string& path) override
+    {
+        throw exception();
+    }
+
     int Size() override
     {
         throw exception();
@@ -88,8 +128,7 @@ public:
 
     void Print() override
     {
-        cout << format("Файлы: ");
-        cout << name << endl;
+        cout << format("[Файл] {}", name) << endl;
     }
 
 };

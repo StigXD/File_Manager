@@ -15,7 +15,7 @@ void ShowDirectory(Component* currentDir, const string& path)
 {
 	if (currentDir->Size() == 0)
 	{
-		for (const auto& object : fs::recursive_directory_iterator(path))
+		for (const auto& object : fs::directory_iterator(path))
 			if (fs::is_directory(object))
 			{
 				Component* subDir = new Directory(object.path().string());
