@@ -24,12 +24,13 @@ void Menu()
 	{
 		int choice;
 
-		cout << "Текущая директория: " << endl;
+		cout << endl << "Текущая директория: ";
 		ShowDirectory(currentDir, path);
+		cout << endl;
 
 
 		cout << "Выберите пункт меню:" << endl;
-		cout << "1 - Показать содержимое директории" << endl;
+		cout << "1 - Открыть папку" << endl;
 		cout << "2 - Создать папку/файл" << endl;
 		cout << "3 - Удалить папку/файл" << endl;
 		cout << "4 - Переименовать папку/файл" << endl;
@@ -50,35 +51,38 @@ void Menu()
 		{
 		case 1:
 		{
-			ShowDirectory(currentDir, path);
+			string nameDirctory;
+			cout << "Выберите папку" << endl;
+			cin.ignore();
+			getline(cin, nameDirctory);
+
+			path = currentDir->Open(nameDirctory);
+			currentDir = new Directory(path);
+
 			break;
 		}
 		case 2:
 		{
-			cout << "Создать:" << endl;
-			cout<<"0 - директорию" << endl;
-			cout << "1 - файл" << endl;
-
-			bool choose;
-			cin >> choose;
-
 			string name;
 			cout << "Введите название" << endl;
 			cin.ignore();
 			getline(cin, name);
-			name = path + '\\' + name;
+			fs::path newPath(path);
+			newPath.append(name);
 
-
-			if(choose)
+			if(newPath.has_extension())
 			{
-				ofstream newFile;
-				newFile.open(name);
-				if (!newFile.is_open())
-					cout << "Неудалось создать файл" << endl;
-				newFile.close();
+				Component* file = new File(newPath.string());
+				file->NewObject(newPath.string());
+				currentDir->Add(file);
 			}
 			else
-				fs::create_directory(name);
+			{
+				Component* subDir = new Directory(newPath.string());
+				subDir->NewObject(newPath.string());
+				currentDir->Add(subDir);
+			}
+
 			break;
 		}
 		case 3:
@@ -89,49 +93,30 @@ void Menu()
 			cin.ignore();
 			getline(cin, name);
 
-			for (auto& deleteFile : fs::recursive_directory_iterator(path))
-				if (fs::is_regular_file(deleteFile))
-				{
-					if (deleteFile.path().filename().string().find(name) != -1)
-					{
-						cout << format("Найден файл {}", deleteFile.path().filename().string()) << endl;
-						if (fs::remove(deleteFile.path()))
-							cout << format("Файл {} удален!", deleteFile.path().filename().string()) << endl;
-						break;
-					}
-				}
-				else if (fs::is_directory(deleteFile))
-				{
-					if (deleteFile.path().string().find(name) != -1)
-					{
-						cout << format("Найдена директория {}", deleteFile.path().string()) << endl;
-						if (fs::remove_all(deleteFile.path()))
-							cout << format("Директория {} удалена!", deleteFile.path().string()) << endl;
-						break;
-					}
-				}
+			fs::path newPath(path);
+			newPath.append(name);
+
+			currentDir->Remove(newPath.string());
+
 			break;
 		}
 		case 4:
 		{
 			cout << "Выберите файл/папку" << endl;
-			string name, newName;
+			string oldName, newName;
 			cin.ignore();
-			getline(cin, name);
+			getline(cin, oldName);
+
+			fs::path oldPath(path);
+			oldPath.append(oldName);
 
 			cout << "Введите новове имя => ";
-			cin.ignore();
 			getline(cin, newName);
 
-			for (auto& object : fs::recursive_directory_iterator(path))
-				if (fs::is_regular_file(object) || fs::is_directory(object))
-					if (object.path().string().find(name) != -1)
-					{
-						cout << format("Найден файл: {}\n", object.path().filename().string());
-						fs::rename(object.path(), object.path().parent_path().string() + '\\' + newName);
-						break;
-					}
+			fs::path newPath(path);
+			newPath.append(newName);
 
+			currentDir->Rename(oldPath.string(), newPath.string());
 
 			break;
 		}
@@ -196,9 +181,17 @@ void Menu()
 			cin.ignore();
 			getline(cin, name);
 
-			for (auto& sizeFile : fs::recursive_directory_iterator(path))
-				if (sizeFile.path().filename().string().find(name) != -1)
-					cout << format("Размер файла {} равен {} Mb", sizeFile.path().filename().string(), fs::file_size(sizeFile.path())/1024/1024) << endl;
+			fs::path newPath(path);
+			newPath.append(name);
+
+			double sizeObject = 0;
+
+			if (newPath.has_extension())
+				currentDir->GetSizeFile(newPath.string(), sizeObject);
+			else
+				currentDir->GetSizeDirectory(newPath.string(), sizeObject);
+
+			cout << format("Размер файла {} равен {} Mb", newPath.string(), sizeObject / 1024 / 1024) << endl;
 			break;
 		}
 		case 7:
@@ -227,12 +220,14 @@ void Menu()
 		}
 		case 9:
 		{
-			currentDir = new Directory(currentDir->MoveBack(path));
+			path = currentDir->MoveBack(path);
+			currentDir = new Directory(path);
 			break;
 		}
 		case 10:
 		{
-			currentDir = new Directory(currentDir->MoveToRoot(path));
+			path = currentDir->MoveToRoot(path);
+			currentDir = new Directory(path);
 			break;
 		}
 
