@@ -15,7 +15,6 @@ namespace fs = filesystem;
 
 void Menu()
 {
-	//CacheFilesystem(path);
 	string path = fs::current_path().string();
 
 	Component* currentDir = new Directory(path);
@@ -64,9 +63,12 @@ void Menu()
 		case 2:
 		{
 			string name;
+
 			cout << "Введите название" << endl;
+
 			cin.ignore();
 			getline(cin, name);
+
 			fs::path newPath(path);
 			newPath.append(name);
 
@@ -103,7 +105,9 @@ void Menu()
 		case 4:
 		{
 			cout << "Выберите файл/папку" << endl;
+
 			string oldName, newName;
+
 			cin.ignore();
 			getline(cin, oldName);
 
@@ -122,54 +126,26 @@ void Menu()
 		}
 		case 5:
 		{
-			string name, newPath;
+			string name, pathDestination;
 			bool flag;
 
 			cout << "Введите имя файла/папки" << endl;
 
 			cin.ignore();
 			getline(cin, name);
+			fs::path namePath(path);
+			namePath.append(name);
 
 			cout << "Укажите путь назначения" << endl;
-			getline(cin, newPath);
-			
+
+			getline(cin, pathDestination);
+			fs::path currentPath(pathDestination);
+			currentPath.append(name);
+
 			cout << "Переместить? (0/1)";
 			cin >> flag;
 
-			for (auto& copyFile : fs::recursive_directory_iterator(path))
-				if (fs::is_regular_file(copyFile))
-				{
-					if (copyFile.path().filename().string().find(name) != -1)
-					{
-						cout << format("Найден файл {}", copyFile.path().filename().string()) << endl;
-
-						if (fs::copy_file(copyFile.path(), newPath + '\\' + copyFile.path().filename().string()))
-							cout << format("Файл {} скопирован по пути {}!", copyFile.path().filename().string(), newPath) << endl;
-
-						if (flag)
-							if (fs::remove(copyFile.path()))
-								cout << format("Исходный файл {} удален!", copyFile.path().filename().string()) << endl;
-
-						break;
-					}
-				}
-				else if (fs::is_directory(copyFile))
-				{
-					if (copyFile.path().string().find(name) != -1)
-					{
-						cout << format("Найдена директория {}", copyFile.path().string()) << endl;
-
-						fs::copy(copyFile.path(), newPath + '\\' + copyFile.path().filename().string());
-
-						cout << format("Директория {} скопирована!", copyFile.path().filename().string()) << endl;
-
-						if (flag)
-							if (fs::remove_all(copyFile.path()))
-								cout << format("Исходная директория {} удалена!", copyFile.path().string()) << endl;
-
-						break;
-					}
-				}
+			currentDir->CopyCut(namePath.string(), currentPath.string(), flag);
 
 			break;
 		}
@@ -187,19 +163,34 @@ void Menu()
 			double sizeObject = 0;
 
 			if (newPath.has_extension())
-				currentDir->GetSizeFile(newPath.string(), sizeObject);
-			else
-				currentDir->GetSizeDirectory(newPath.string(), sizeObject);
+			{
+				Component* file = new File(newPath.string());
+				file->GetSize(newPath.string(), sizeObject);
 
-			cout << format("Размер файла {} равен {} Mb", newPath.string(), sizeObject / 1024 / 1024) << endl;
-			break;
+				cout << format("Размер файла {} равен {} Mb", newPath.string(), sizeObject / 1024 / 1024) << endl;
+
+				if (file != nullptr)
+					delete file;
+
+				break;
+			}
+			else
+			{
+				currentDir->GetSize(newPath.string(), sizeObject);
+
+				cout << format("Размер файла {} равен {} Mb", newPath.string(), sizeObject / 1024 / 1024) << endl;
+
+				break;
+			}
+
 		}
 		case 7:
 		{
 			string name;
 			cout << "Поиск => " << endl;
 			cin >> name;
-			
+
+			//currentDir->Find(name)
 			for (auto& findFile : fs::recursive_directory_iterator(path))
 				if (fs::is_regular_file(findFile))
 					if (findFile.path().filename().string().find(name)!=-1)

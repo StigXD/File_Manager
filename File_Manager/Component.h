@@ -25,21 +25,20 @@ public:
     virtual ~Component() = default;
 
     virtual void Add(Component* component) = 0;
-    virtual string GetName() = 0;
     virtual void SetName(const string& name) = 0;
     virtual void Clear(Component* component) = 0;
     virtual void Remove(const string& path) = 0;
+    virtual void NewObject(const string& path) = 0;
+    virtual void Rename(const string& oldName, const string& newName) = 0;
+    virtual void CopyCut(const string& path, const string& newPath, const bool flag) = 0;
+    virtual void Print() = 0;
+    virtual double GetSize(const string& path, double& sizeObject) = 0;
+    virtual int Size() = 0;
+    virtual string GetName() = 0;
     virtual string MoveBack(const string& path) = 0;
     virtual string MoveToRoot(const string& path) = 0;
     virtual string Open(const string& path) = 0;
-    virtual void NewObject(const string& path) = 0;
-    virtual void Rename(const string& oldName, const string& newName) = 0;
-    virtual double GetSizeDirectory(const string& path, double& sizeObject) = 0;
-    virtual double GetSizeFile(const string& path, double& sizeObject) = 0;
-
-
-    virtual int Size() = 0;
-    virtual void Print() = 0;
+    virtual string Find(const string& path) = 0;
 };
 
 class Directory :public Component
@@ -56,8 +55,7 @@ public:
     ~Directory() override
     {
         if (!components.empty())
-            //for (int i = 0; i < components.size(); i++)
-                Clear(this);
+            Clear(this);
     }
 
 
@@ -70,6 +68,7 @@ public:
     {
         this->name = name;
     }
+
 
     void Add(Component* component) override
     {
@@ -132,24 +131,57 @@ public:
         fs::rename(oldName, newName);
     }
 
-    double GetSizeDirectory(const string& path, double& sizeObject) override
+    double GetSize(const string& path, double& sizeObject) override
     {
         for (int i = 0; i < components.size(); i++)
         {
             if (components[i]->GetName() == path)
                 for (const auto& object : fs::recursive_directory_iterator(components[i]->GetName()))
                     if (fs::is_directory(object))
-                        GetSizeDirectory(object.path().string(), sizeObject);
+                        GetSize(object.path().string(), sizeObject);
                     else
                         sizeObject += fs::file_size(object);
         }
         return sizeObject;
     }
 
-    double GetSizeFile(const string& path, double& sizeObject) override
+    void CopyCut(const string& path, const string& newPath, const bool flag) override
     {
-        throw exception();
+        //if(fs::is_regular_file(path))
+        //{
+        //    if (fs::copy_file(path, newPath))
+        //        cout << format("Файл скопирован по пути {}!", newPath) << endl;
+        //    if (flag)
+        //        if (fs::remove(path))
+        //            cout << format("Исходный файл {} удален!", path) << endl;
+        //}
+        //else if (fs::is_directory(path))
+        //{
+        //    for(const auto& iter:components)
+        //        if(iter->GetName()==path)
+        //        {
+        //            CopyCut(iter->GetName())
+        //            fs::copy(iter->GetName(), newPath);
+        //        }
+        //    if (flag)
+        //        if (fs::remove_all(path))
+        //            cout << format("Исходная директория удалена!") << endl;
+        //}
+
     }
+
+    string Find(const string& findName)override
+    {
+        //if(!components.empty())
+        //{
+        //    for (int i = 0; i < components.size(); i++)
+        //    {
+        //        if (components[i]->GetName() == findName)
+        //            return 
+        //    }
+        //}
+    }
+
 
     int Size() override
     {
@@ -178,11 +210,6 @@ public:
     File(string name) : Component(name) { }
 
     ~File() override = default;
-    //{
-    //    if (!components.empty())
-    //        //for (int i = 0; i < components.size(); i++)
-    //        Remove(this);
-    //}
 
     string GetName() override
     {
@@ -237,15 +264,20 @@ public:
         throw exception();
     }
 
-    double GetSizeDirectory(const string& path, double& sizeObject) override
-    {
-        throw exception();
-    }
-
-    double GetSizeFile(const string& path, double& sizeObject) override
+    double GetSize(const string& path, double& sizeObject) override
     {
         sizeObject = fs::file_size(path);
         return sizeObject;
+    }
+
+    void CopyCut(const string& path, const string& newPath, const bool flag) override
+    {
+
+    }
+
+    string Find(const string& path)override
+    {
+
     }
 
     int Size() override
