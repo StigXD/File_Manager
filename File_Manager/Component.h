@@ -38,7 +38,7 @@ public:
     virtual string MoveBack(const string& path) = 0;
     virtual string MoveToRoot(const string& path) = 0;
     virtual string Open(const string& path) = 0;
-    virtual string Find(const string& path) = 0;
+    //virtual string Find(const string& path) = 0;
 };
 
 class Directory :public Component
@@ -170,17 +170,17 @@ public:
 
     }
 
-    string Find(const string& findName)override
-    {
-        //if(!components.empty())
-        //{
-        //    for (int i = 0; i < components.size(); i++)
-        //    {
-        //        if (components[i]->GetName() == findName)
-        //            return 
-        //    }
-        //}
-    }
+    //string Find(const string& findName)override
+    //{
+    //    //if(!components.empty())
+    //    //{
+    //    //    for (int i = 0; i < components.size(); i++)
+    //    //    {
+    //    //        if (components[i]->GetName() == findName)
+    //    //            return 
+    //    //    }
+    //    //}
+    //}
 
 
     int Size() override
@@ -275,10 +275,10 @@ public:
 
     }
 
-    string Find(const string& path)override
-    {
+    //string Find(const string& path)override
+    //{
 
-    }
+    //}
 
     int Size() override
     {
