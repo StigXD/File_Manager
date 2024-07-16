@@ -12,33 +12,10 @@ namespace fs = filesystem;
 
 class Component
 {
-protected:
-
-    string name;
-
 public:
-    Component(string name)
-    {
-        this->name = name;
-    }
-    
+   
     virtual ~Component() = default;
 
-    virtual void Add(Component* component) = 0;
-    virtual void SetName(const string& name) = 0;
-    virtual void Clear(Component* component) = 0;
-    virtual void Remove(const string& path) = 0;
-    virtual void NewObject(const string& path) = 0;
-    virtual void Rename(const string& oldName, const string& newName) = 0;
-    virtual void CopyCut(const string& path, const string& newPath, const bool flag) = 0;
-    virtual void Print() = 0;
-    virtual double GetSize(const string& path, double& sizeObject) = 0;
-    virtual int Size() = 0;
-    virtual string GetName() = 0;
-    virtual string MoveBack(const string& path) = 0;
-    virtual string MoveToRoot(const string& path) = 0;
-    virtual string Open(const string& path) = 0;
-    //virtual string Find(const string& path) = 0;
 };
 
 class Directory :public Component
@@ -46,10 +23,12 @@ class Directory :public Component
 private:
 
     vector <Component*> components;
+    string name;
 
 public:
-    Directory(string name) : Component(name)
+    Directory(string name)
     {
+        this->name = name;
     }
 
     ~Directory() override
@@ -289,5 +268,26 @@ public:
     {
         cout << format("[Τΰιλ] {}", name) << endl;
     }
+
+};
+
+class ComponentFunction:public Component
+{
+public:
+    virtual void Add(Component* component) = 0;
+    virtual void SetName(const string& name) = 0;
+    virtual void Clear(Component* component) = 0;
+    virtual void Remove(const string& path) = 0;
+    virtual void NewObject(const string& path) = 0;
+    virtual void Rename(const string& oldName, const string& newName) = 0;
+    virtual void CopyCut(const string& path, const string& newPath, const bool flag) = 0;
+    virtual void Print() = 0;
+    virtual double GetSize(const string& path, double& sizeObject) = 0;
+    virtual int Size() = 0;
+    virtual string GetName() = 0;
+    virtual string MoveBack(const string& path) = 0;
+    virtual string MoveToRoot(const string& path) = 0;
+    virtual string Open(const string& path) = 0;
+    //virtual string Find(const string& path) = 0;
 
 };

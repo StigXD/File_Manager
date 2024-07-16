@@ -13,20 +13,24 @@ using namespace std;
 
 namespace fs = filesystem;
 
-void Menu()
+class Menu
 {
-	string path = fs::current_path().string();
+	string path;
+	Component* currentDir;
 
-	Component* currentDir = new Directory(path);
+public:
 
-	while(true)
+	Menu(Component* currentDir, const string& path)
 	{
-		int choice;
+		this->path = path;
+		this->currentDir = currentDir;
+	}
 
+	void ShowMenu()
+	{
 		cout << endl << "Текущая директория: ";
 		ShowDirectory(currentDir, path);
 		cout << endl;
-
 
 		cout << "Выберите пункт меню:" << endl;
 		cout << "1 - Открыть папку" << endl;
@@ -40,6 +44,39 @@ void Menu()
 		cout << "9 - Назад" << endl;
 		cout << "10 - Вернуться в корень диска" << endl;
 		cout << "0 - Exit" << endl;
+	}
+
+	void ShowDirectory(Component* currentDir, const string& path)
+	{
+		if (currentDir->Size() == 0)
+		{
+			for (const auto& object : fs::directory_iterator(path))
+				if (fs::is_directory(object))
+				{
+					Component* subDir = new Directory(object.path().string());
+					currentDir->Add(subDir);
+				}
+				else
+				{
+					Component* file = new File(object.path().string());
+					currentDir->Add(file);
+				}
+			currentDir->Print();
+		}
+		else
+			currentDir->Print();
+	}
+};
+void Menu()
+{
+	string path = fs::current_path().string();
+
+	Component* currentDir = new Directory(path);
+
+	while(true)
+	{
+		int choice;
+
 		
 		cin >> choice;
 

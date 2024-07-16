@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="Component.h" />
     <ClInclude Include="CacheFilesystem.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="ShowDirectory.h" />
   </ItemGroup>
