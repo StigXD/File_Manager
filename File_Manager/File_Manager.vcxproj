@@ -131,10 +131,24 @@
     <ClCompile Include="Main_Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddComponent.h" />
+    <ClInclude Include="Clear.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="CacheFilesystem.h" />
+    <ClInclude Include="CopyComponent.h" />
+    <ClInclude Include="Directory.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="FileManager.h" />
+    <ClInclude Include="FindComponent.h" />
+    <ClInclude Include="GetNameComponent.h" />
+    <ClInclude Include="GetSizeComponent.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="ComponentFunction.h" />
+    <ClInclude Include="MoveBack.h" />
+    <ClInclude Include="MoveToRoot.h" />
+    <ClInclude Include="OpenDirectory.h" />
+    <ClInclude Include="RemoveComponent.h" />
+    <ClInclude Include="RenameComponent.h" />
+    <ClInclude Include="SetGetName.h" />
     <ClInclude Include="ShowDirectory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

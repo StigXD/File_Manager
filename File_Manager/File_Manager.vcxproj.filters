@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Файлы заголовков\ComponentFunction">
+      <UniqueIdentifier>{71fc08b9-a32d-4ab4-b1e0-53c284005ecc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Component">
+      <UniqueIdentifier>{fd3703f2-6595-4e9e-97d5-1cc89965955a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main_Source.cpp">
@@ -23,16 +29,58 @@
     <ClInclude Include="Menu.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="ShowDirectory.h">
+    <ClInclude Include="FileManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="CacheFilesystem.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="AddComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="Clear.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFunction.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="RemoveComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenDirectory.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="SetGetName.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Файлы заголовков\Component</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
+    <ClInclude Include="Directory.h">
+      <Filter>Файлы заголовков\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Файлы заголовков\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RenameComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="GetSizeComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="GetNameComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveBack.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveToRoot.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="FindComponent.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
+    </ClInclude>
+    <ClInclude Include="ShowDirectory.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
