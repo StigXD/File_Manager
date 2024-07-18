@@ -132,14 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddComponent.h" />
-    <ClInclude Include="Clear.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CopyComponent.h" />
     <ClInclude Include="Directory.h" />
     <ClInclude Include="File.h" />
-    <ClInclude Include="FileManager.h" />
+    <ClInclude Include="FindByMask.h" />
     <ClInclude Include="FindComponent.h" />
-    <ClInclude Include="GetNameComponent.h" />
     <ClInclude Include="GetSizeComponent.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="ComponentFunction.h" />

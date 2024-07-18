@@ -6,13 +6,13 @@
 #include "File.h"
 
 
-class Find : public IComponentFunction
+class FindByMask : public IComponentFunction
 {
 	IComponent* currentDir;
 	string* currentPath;
 
 public:
-	Find(IComponent* currentDir, string* currentPath)
+	FindByMask(IComponent* currentDir, string* currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -20,17 +20,18 @@ public:
 
 	string GetDescription() override
 	{
-		return "Поиск по названию";
+		return "Поиск по маске";
 	}
 
 	void Run() override
 	{
-		string name;
-		cout << "Поиск => " << endl;
-		cin >> name;
+		string mask;
+		cout << "Поиск по маске => ";
+		cin >> mask;
+
 		for (auto& findFile : fs::recursive_directory_iterator(*currentPath))
 			if (fs::is_regular_file(findFile))
-				if (findFile.path().filename().string().find(name)!=-1)
+				if(findFile.path().extension().string().find(mask)!=-1)
 					cout << format("Найден файл {}\n", findFile.path().string());
 	}
 };

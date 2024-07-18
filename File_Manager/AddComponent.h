@@ -5,13 +5,13 @@
 #include "Directory.h"
 #include "File.h"
 
-class AddComponent : public IComponentFunction
+class Add : public IComponentFunction
 {
 	IComponent* currentDir;
-	string currentPath;
+	string* currentPath;
 
 public:
-	AddComponent(IComponent* currentDir, string& currentPath)
+	Add(IComponent* currentDir, string* currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -31,7 +31,7 @@ public:
 		cin.ignore();
 		getline(cin, name);
 
-		fs::path newPath(currentPath);
+		fs::path newPath(*currentPath);
 		newPath.append(name);
 
 		if(newPath.has_extension())

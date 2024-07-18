@@ -10,12 +10,13 @@ namespace fs = filesystem;
 
 #include "Component.h"
 #include "OpenDirectory.h"
-#include "CreateNewComponent.h"
+#include "AddComponent.h"
 #include "RemoveComponent.h"
 #include "RenameComponent.h"
 #include "CopyComponent.h"
 #include "GetSizeComponent.h"
 #include "FindComponent.h"
+#include "FindByMask.h"
 #include "MoveBack.h"
 #include "MoveToRoot.h"
 #include "Menu.h"
@@ -26,27 +27,17 @@ namespace fs = filesystem;
 IMenu* MakeMenu(IComponent* currentDir, string currentPath)
 {
 
-	ICarReader* dbCarReader = new FileCarReader(carDBFileName);
-	ICarWriter* dbCarWriter = new FileCarWriter(carDBFileName);
-
-	ICarFinder* carFinder = new CarFinder(carDB);
-	ICarSorter* carSorter = new CarSorter(carDB);
-
-	ICarReader* carReader = new ConsoleCarReader();
-	ICarWriter* carWriter = new ConsoleCarWriter();
-
 	IMenu* menu = new ConsoleMenu();
-	menu->AddCommand(new OpenDirectory(currentDir, currentPath));
-	menu->AddCommand(new AddCarCommand(carDB, carReader));
-	menu->AddCommand(new RenameComponent(carDB));
-	menu->AddCommand(new FindCarByNameCommand(carFinder, carWriter));
-	menu->AddCommand(new FindCarByMakeYearCommand(carFinder, carWriter));
-	menu->AddCommand(new FindCarByEngineCapacityCommand(carFinder, carWriter));
-	menu->AddCommand(new FindCarByCostCommand(carFinder, carWriter));
-	menu->AddCommand(new SortCarsByNameCommand(carSorter));
-	menu->AddCommand(new SortCarsByMakeYearCommand(carSorter));
-	menu->AddCommand(new SortCarsByEngineCapacityCommand(carSorter));
-	menu->AddCommand(new SortCarsByCostCommand(carSorter));
+	menu->AddCommand(new Open(currentDir, &currentPath));
+	menu->AddCommand(new Add(currentDir, &currentPath));
+	menu->AddCommand(new Remove(currentDir, &currentPath));
+	menu->AddCommand(new Rename(currentDir, &currentPath));
+	menu->AddCommand(new Copy(currentDir, &currentPath));
+	menu->AddCommand(new GetSize(currentDir, &currentPath));
+	menu->AddCommand(new Find(currentDir, &currentPath));
+	menu->AddCommand(new FindByMask(currentDir, &currentPath));
+	menu->AddCommand(new MoveBack(currentDir, &currentPath));
+	menu->AddCommand(new MoveToRoot(currentDir, &currentPath));
 
 	return menu;
 }
@@ -61,13 +52,11 @@ void main()
 
 	IComponent* currentDir = new Directory(currentPath);
 
+	IPrinter* showMenu = new ConsolePrint();
+
 	auto menu = MakeMenu(currentDir, currentPath);
 
-	//carDBSaver->Load();
-
-	menu->Start(currentDir);
-
-	//carDBSaver->Save();
+	menu->Start(currentDir, showMenu);
 
     system("pause");
 }

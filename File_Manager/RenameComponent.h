@@ -6,13 +6,13 @@
 #include "File.h"
 
 
-class RenameComponent : public IComponentFunction
+class Rename : public IComponentFunction
 {
 	IComponent* currentDir;
-	string currentPath;
+	string* currentPath;
 
 public:
-	RenameComponent(IComponent* carDB)
+	Rename(IComponent* currentDir, string* currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -32,13 +32,13 @@ public:
 		cin.ignore();
 		getline(cin, oldName);
 
-		fs::path oldPath(currentPath);
+		fs::path oldPath(*currentPath);
 		oldPath.append(oldName);
 
 		cout << "¬ведите новове им€ => ";
 		getline(cin, newName);
 
-		fs::path newPath(currentPath);
+		fs::path newPath(*currentPath);
 		newPath.append(newName);
 
 		//for (auto iter: currentDir.)

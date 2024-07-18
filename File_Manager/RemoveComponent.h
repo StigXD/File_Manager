@@ -6,13 +6,13 @@
 #include "File.h"
 
 
-class RenameComponent : public IComponentFunction
+class Remove : public IComponentFunction
 {
 	IComponent* currentDir;
-	string currentPath;
+	string* currentPath;
 
 public:
-	RenameComponent(IComponent* carDB)
+	Remove(IComponent* currentDir, string* currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -31,7 +31,7 @@ public:
 		cin.ignore();
 		getline(cin, name);
 
-		fs::path newPath(currentPath);
+		fs::path newPath(*currentPath);
 		newPath.append(name);
 
 		currentDir->Remove(newPath.string());

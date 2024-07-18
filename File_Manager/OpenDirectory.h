@@ -6,13 +6,13 @@
 #include "File.h"
 #include "AddComponent.h"
 
-class OpenDirectory : public IComponentFunction
+class Open : public IComponentFunction
 {
 	IComponent* currentDir;
-	string currentPath;
+	string* currentPath;
 
 public:
-	OpenDirectory(IComponent* currentDir, string& currentPath)
+	Open(IComponent* currentDir, string* currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -30,8 +30,8 @@ public:
 		cin.ignore();
 		getline(cin, nameDirctory);
 
-		currentPath = currentDir->GetName() + '\\' + nameDirctory;
-		currentDir = new Directory(currentPath);
+		(*currentPath) = currentDir->GetName() + '\\' + nameDirctory;
+		currentDir = new Directory(*currentPath);
 
 		if (currentDir->Size() == 0)
 		{

@@ -36,11 +36,9 @@ public:
 
     //string MoveBack(const string& path) override
     //{
-    //    throw exception();
     //}
     //string MoveToRoot(const string& path) override
     //{
-    //    throw exception();
     //}
 
     //string Open(const string& path) override
@@ -80,6 +78,7 @@ public:
 
     int Size() const override
     {
+        return 0;
     }
 
     void Print() const override

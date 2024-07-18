@@ -29,13 +29,7 @@
     <ClInclude Include="Menu.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="AddComponent.h">
-      <Filter>Файлы заголовков\ComponentFunction</Filter>
-    </ClInclude>
-    <ClInclude Include="Clear.h">
       <Filter>Файлы заголовков\ComponentFunction</Filter>
     </ClInclude>
     <ClInclude Include="ComponentFunction.h">
@@ -68,9 +62,6 @@
     <ClInclude Include="GetSizeComponent.h">
       <Filter>Файлы заголовков\ComponentFunction</Filter>
     </ClInclude>
-    <ClInclude Include="GetNameComponent.h">
-      <Filter>Файлы заголовков\ComponentFunction</Filter>
-    </ClInclude>
     <ClInclude Include="MoveBack.h">
       <Filter>Файлы заголовков\ComponentFunction</Filter>
     </ClInclude>
@@ -82,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="ShowDirectory.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="FindByMask.h">
+      <Filter>Файлы заголовков\ComponentFunction</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
