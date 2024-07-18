@@ -9,10 +9,10 @@
 class Open : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	Open(IComponent* currentDir, string* currentPath)
+	Open(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -27,11 +27,10 @@ public:
 	{
 		string nameDirctory;
 		cout << "Выберите папку" << endl;
-		cin.ignore();
 		getline(cin, nameDirctory);
 
-		(*currentPath) = currentDir->GetName() + '\\' + nameDirctory;
-		currentDir = new Directory(*currentPath);
+		currentPath = currentDir->GetName() + '\\' + nameDirctory;
+		currentDir = new Directory(currentPath);
 
 		if (currentDir->Size() == 0)
 		{

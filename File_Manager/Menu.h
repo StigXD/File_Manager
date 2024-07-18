@@ -12,18 +12,18 @@ using namespace std;
 
 namespace fs = filesystem;
 
-template <typename TValue>
-TValue Parse(std::function<TValue()> parseValue, TValue valueOnError)
-{
-	try
-	{
-		return parseValue();
-	}
-	catch (...)
-	{
-		return valueOnError;
-	}
-}
+//template <typename TValue>
+//TValue Parse(std::function<TValue()> parseValue, TValue valueOnError)
+//{
+//	try
+//	{
+//		return parseValue();
+//	}
+//	catch (...)
+//	{
+//		return valueOnError;
+//	}
+//}
 
 int ReadSelector(const int maxValue)
 {
@@ -102,12 +102,13 @@ public:
 
 	void Start(IComponent* currentDir, IPrinter* showDir) override
 	{
+
 		while (true)
 		{
 			system("cls");
 
 			this->showDir = showDir;
-			showDir->Print(currentDir);
+			this->showDir->Print(currentDir);
 
 			PrintCommands();
 
