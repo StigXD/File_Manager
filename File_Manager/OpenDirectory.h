@@ -23,7 +23,7 @@ public:
 		return "Открыть директорию";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
 		string nameDirctory;
 		cout << "Выберите папку" << endl;
@@ -31,20 +31,5 @@ public:
 
 		currentPath = currentDir->GetName() + '\\' + nameDirctory;
 		currentDir = new Directory(currentPath);
-
-		if (currentDir->Size() == 0)
-		{
-			for (const auto& object : fs::directory_iterator(currentDir->GetName()))
-				if (fs::is_directory(object))
-				{
-					IComponent* subDir = new Directory(object.path().string());
-					currentDir->Add(subDir);
-				}
-				else
-				{
-					IComponent* file = new File(object.path().string());
-					currentDir->Add(file);
-				}
-		}
 	}
 };

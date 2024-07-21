@@ -26,29 +26,17 @@ namespace fs = filesystem;
 
 IMenu* MakeMenu(IComponent* currentDir, string& currentPath)
 {
-	for (const auto& object : fs::directory_iterator(currentDir->GetName()))
-		if (fs::is_directory(object))
-		{
-			IComponent* subDir = new Directory(object.path().string());
-			currentDir->Add(subDir);
-		}
-		else
-		{
-			IComponent* file = new File(object.path().string());
-			currentDir->Add(file);
-		}
-
 	IMenu* menu = new ConsoleMenu();
 	menu->AddCommand(new Open(currentDir, currentPath));
-	//menu->AddCommand(new Add(currentDir, currentPath));
-	//menu->AddCommand(new Remove(currentDir, currentPath));
-	//menu->AddCommand(new Rename(currentDir, currentPath));
-	//menu->AddCommand(new Copy(currentDir, currentPath));
-	//menu->AddCommand(new GetSize(currentDir, currentPath));
-	//menu->AddCommand(new Find(currentDir, currentPath));
-	//menu->AddCommand(new FindByMask(currentDir, currentPath));
-	//menu->AddCommand(new MoveBack(currentDir, currentPath));
-	//menu->AddCommand(new MoveToRoot(currentDir, currentPath));
+	menu->AddCommand(new Add(currentDir, currentPath));
+	menu->AddCommand(new Remove(currentDir, currentPath));
+	menu->AddCommand(new Rename(currentDir, currentPath));
+	menu->AddCommand(new Copy(currentDir, currentPath));
+	menu->AddCommand(new GetSize(currentDir, currentPath));
+	menu->AddCommand(new Find(currentDir, currentPath));
+	menu->AddCommand(new FindByMask(currentDir, currentPath));
+	menu->AddCommand(new MoveBack(currentDir, currentPath));
+	menu->AddCommand(new MoveToRoot(currentDir, currentPath));
 
 	return menu;
 }
@@ -61,13 +49,13 @@ void main()
 
 	static string currentPath = fs::current_path().string();
 
-	IComponent* currentDir = new Directory(currentPath);
+	static IComponent* currentDir = new Directory(currentPath);
 
 	IPrinter* showMenu = new ConsolePrint();
 
 	auto menu = MakeMenu(currentDir, currentPath);
 
-	menu->Start(currentDir, showMenu);
+	menu->Start(currentDir, showMenu, currentPath);
 
     system("pause");
 }

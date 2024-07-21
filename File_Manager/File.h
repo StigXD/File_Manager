@@ -28,37 +28,13 @@ public:
 
     void Add(IComponent* component) override
     {
+        throw ("Error type of component");
     }
 
     void Remove(const string& path)
     {
+        throw ("Error type of component");
     }
-
-    //string MoveBack(const string& path) override
-    //{
-    //}
-    //string MoveToRoot(const string& path) override
-    //{
-    //}
-
-    //string Open(const string& path) override
-    //{
-    //    throw exception();
-    //}
-
-    //void NewObject(const string& path) override
-    //{
-    //    ofstream newFile;
-    //    newFile.open(path);
-    //    if (!newFile.is_open())
-    //        cout << "Неудалось создать файл" << endl;
-    //    newFile.close();
-    //}
-
-    //void Rename(const string& oldName, const string& newName) override
-    //{
-    //    throw exception();
-    //}
 
     double GetSize(const string& path) override
     {
@@ -66,24 +42,19 @@ public:
         return sizeObject;
     }
 
-    //void CopyCut(const string& path, const string& newPath, const bool flag) override
-    //{
-
-    //}
-
-    ////string Find(const string& path)override
-    ////{
-
-    ////}
-
     int Size() const override
     {
-        return 0;
+        throw ("Error type of component");
     }
 
     void Print() const override
     {
         cout << format("[FILE] {}", name) << endl;
+    }
+
+    void Clear()
+    {
+        throw ("Error type of component");
     }
 
 };

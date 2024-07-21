@@ -12,19 +12,6 @@ using namespace std;
 
 namespace fs = filesystem;
 
-//template <typename TValue>
-//TValue Parse(std::function<TValue()> parseValue, TValue valueOnError)
-//{
-//	try
-//	{
-//		return parseValue();
-//	}
-//	catch (...)
-//	{
-//		return valueOnError;
-//	}
-//}
-
 int ReadSelector(const int maxValue)
 {
 	string str;
@@ -50,7 +37,7 @@ public:
 	virtual ~IMenu() = default;
 
 	virtual void AddCommand(IComponentFunction* command) = 0;
-	virtual void Start(IComponent* currentDir, IPrinter* showDir) = 0;
+	virtual void Start(IComponent*& currentDir, IPrinter* showDir, string& currentPath) = 0;
 };
 
 class ConsoleMenu : public IMenu
@@ -65,13 +52,13 @@ class ConsoleMenu : public IMenu
 		cout << "0: Exit" << endl;
 	}
 
-	void ExecutedCommand(const int selector) const
+	void ExecutedCommand(const int selector, string& currentPath, IComponent*& currentDir) const
 	{
 		cout << endl << commands[selector - 1]->GetDescription() << endl << endl;
 
 		try
 		{
-			commands[selector - 1]->Run();
+			commands[selector - 1]->Run(currentDir, currentPath);
 		}
 		catch (const string& message)
 		{
@@ -100,12 +87,30 @@ public:
 		commands.push_back(command);
 	}
 
-	void Start(IComponent* currentDir, IPrinter* showDir) override
+	void Start(IComponent*& currentDir, IPrinter* showDir, string& currentPath) override
 	{
-
+		string checkPath = currentPath;
+		bool isFirst = true;
 		while (true)
 		{
 			system("cls");
+
+			if(checkPath != currentPath || isFirst)
+			{
+				for (const auto& object : fs::directory_iterator(currentDir->GetName()))
+					if (fs::is_directory(object))
+					{
+						IComponent* subDir = new Directory(object.path().string());
+						currentDir->Add(subDir);
+					}
+					else
+					{
+						IComponent* file = new File(object.path().string());
+						currentDir->Add(file);
+					}
+				checkPath = currentPath;
+				isFirst = false;
+			}
 
 			this->showDir = showDir;
 			this->showDir->Print(currentDir);
@@ -117,7 +122,7 @@ public:
 				break;
 
 			if (selector != -1)
-				ExecutedCommand(selector);
+				ExecutedCommand(selector, currentPath, currentDir);
 		}
 	}
 };

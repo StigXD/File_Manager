@@ -10,10 +10,10 @@
 class Copy : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	Copy(IComponent* currentDir, string* currentPath)
+	Copy(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -24,16 +24,15 @@ public:
 		return "Копировать/переместить директорию/файл";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
 		string name, pathDestination;
 		bool flag;
 
 		cout << "Введите имя файла/папки" << endl;
 
-		cin.ignore();
 		getline(cin, name);
-		fs::path namePath(*currentPath);
+		fs::path namePath(currentPath);
 		namePath.append(name);
 
 		cout << "Укажите путь назначения" << endl;

@@ -8,10 +8,10 @@
 class Add : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	Add(IComponent* currentDir, string* currentPath)
+	Add(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -22,16 +22,15 @@ public:
 		return "—оздать директорию/файл";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
 		string name;
 
 		cout << "¬ведите название" << endl;
 
-		cin.ignore();
 		getline(cin, name);
 
-		fs::path newPath(*currentPath);
+		fs::path newPath(currentPath);
 		newPath.append(name);
 
 		if(newPath.has_extension())

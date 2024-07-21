@@ -21,6 +21,7 @@ public:
     virtual void Remove(const string& path) = 0;
     virtual void Print() const = 0;
     virtual int Size() const = 0;
+    virtual void Clear() = 0;
 
 };
 

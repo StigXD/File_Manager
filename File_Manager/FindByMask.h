@@ -9,10 +9,10 @@
 class FindByMask : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	FindByMask(IComponent* currentDir, string* currentPath)
+	FindByMask(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -23,13 +23,13 @@ public:
 		return "Поиск по маске";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
 		string mask;
 		cout << "Поиск по маске => ";
 		cin >> mask;
 
-		for (auto& findFile : fs::recursive_directory_iterator(*currentPath))
+		for (auto& findFile : fs::recursive_directory_iterator(currentPath))
 			if (fs::is_regular_file(findFile))
 				if(findFile.path().extension().string().find(mask)!=-1)
 					cout << format("Найден файл {}\n", findFile.path().string());

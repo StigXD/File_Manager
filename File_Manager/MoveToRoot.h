@@ -9,10 +9,10 @@
 class MoveToRoot : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	MoveToRoot(IComponent* currentDir, string* currentPath)
+	MoveToRoot(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -23,10 +23,10 @@ public:
 		return "Вернуться в корень диска";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
-		fs::path newPath = *currentPath;
-		(*currentPath) = newPath.root_path().string();
-		currentDir = new Directory(*currentPath);
+		fs::path newPath = currentPath;
+		(currentPath) = newPath.root_path().string();
+		currentDir = new Directory(currentPath);
 	}
 };

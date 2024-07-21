@@ -9,10 +9,10 @@
 class Remove : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	Remove(IComponent* currentDir, string* currentPath)
+	Remove(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -23,15 +23,14 @@ public:
 		return "Удалить директорию/файл";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
 		string name;
 		cout << "Введите имя файла/папки" << endl;
 
-		cin.ignore();
 		getline(cin, name);
 
-		fs::path newPath(*currentPath);
+		fs::path newPath(currentPath);
 		newPath.append(name);
 
 		currentDir->Remove(newPath.string());

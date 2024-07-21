@@ -9,10 +9,10 @@
 class GetSize : public IComponentFunction
 {
 	IComponent* currentDir;
-	string* currentPath;
+	string currentPath;
 
 public:
-	GetSize(IComponent* currentDir, string* currentPath)
+	GetSize(IComponent* currentDir, string& currentPath)
 	{
 		this->currentDir = currentDir;
 		this->currentPath = currentPath;
@@ -23,15 +23,14 @@ public:
 		return "Показать размер директории/файла";
 	}
 
-	void Run() override
+	void Run(IComponent*& currentDir, string& currentPath) override
 	{
 		string name;
 		cout << "Введите имя файла/папки" << endl;
 
-		cin.ignore();
 		getline(cin, name);
 
-		fs::path newPath(*currentPath);
+		fs::path newPath(currentPath);
 		newPath.append(name);
 
 		double sizeObject = 0;
@@ -41,7 +40,7 @@ public:
 			IComponent* file = new File(newPath.string());
 			sizeObject = file->GetSize(newPath.string());
 
-			cout << format("Размер файла {} равен {} Mb", newPath.string(), sizeObject / 1024 / 1024) << endl;
+			cout << format("Размер файла {} равен {} byte", newPath.string(), sizeObject) << endl;
 
 			if (file != nullptr)
 				delete file;
@@ -50,7 +49,7 @@ public:
 		{
 			sizeObject = currentDir->GetSize(newPath.string());
 
-			cout << format("Размер файла {} равен {} Mb", newPath.string(), sizeObject / 1024 / 1024) << endl;
+			cout << format("Размер файла {} равен {} byte", newPath.string(), sizeObject) << endl;
 		}
 
 	}
